@@ -1,0 +1,12 @@
+{
+  "name": "hashigodaka-zenn-2026-08-12-inquiry-management",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "start": "vite --host 0.0.0.0"
+  },
+  "devDependencies": {
+    "vite": "^7.1.1"
+  }
+}
