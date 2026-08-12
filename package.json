@@ -1,0 +1,12 @@
+{
+  "name": "hashigodaka-stackblitz",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite zenn/inquiry-management --host 0.0.0.0",
+    "start": "vite zenn/inquiry-management --host 0.0.0.0"
+  },
+  "devDependencies": {
+    "vite": "^7.1.1"
+  }
+}

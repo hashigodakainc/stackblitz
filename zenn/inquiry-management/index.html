@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>お問い合わせ管理 | Hashigodaka</title>
+  <style>
+    @font-face {
+      font-family: "Hsg Line Seed JP";
+      src: url("https://design.hashigodaka.co.jp/assets/fonts/line-seed-jp-regular.ttf") format("truetype");
+      font-weight: 400;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Hsg Line Seed JP";
+      src: url("https://design.hashigodaka.co.jp/assets/fonts/line-seed-jp-bold.ttf") format("truetype");
+      font-weight: 700;
+      font-display: swap;
+    }
+
+    :root {
+      --hsg-color-neutral-0: #FFFFFF;
+      --hsg-color-neutral-50: #FAF9FC;
+      --hsg-color-neutral-100: #ECE8F0;
+      --hsg-color-neutral-200: #DCD8E1;
+      --hsg-color-neutral-600: #625D69;
+      --hsg-color-neutral-800: #35313A;
+      --hsg-color-neutral-900: #18151D;
+      --hsg-color-blue-50: #E7F4FC;
+      --hsg-color-blue-400: #00A0FF;
+      --hsg-color-blue-700: #005F8F;
+      --hsg-color-green-50: #E8F5EC;
+      --hsg-color-green-700: #176B35;
+      --hsg-color-yellow-50: #FFF4D6;
+      --hsg-color-yellow-700: #704B00;
+      --hsg-color-red-50: #FDEBEC;
+      --hsg-color-red-700: #9F2530;
+      --hsg-color-background-canvas: var(--hsg-color-neutral-50);
+      --hsg-color-background-raised: var(--hsg-color-neutral-0);
+      --hsg-color-background-sunken: var(--hsg-color-neutral-100);
+      --hsg-color-background-inverse: var(--hsg-color-neutral-900);
+      --hsg-color-background-inverse-hover: var(--hsg-color-neutral-800);
+      --hsg-color-text-primary: var(--hsg-color-neutral-900);
+      --hsg-color-text-secondary: var(--hsg-color-neutral-600);
+      --hsg-color-text-inverse: var(--hsg-color-neutral-50);
+      --hsg-color-border-default: var(--hsg-color-neutral-100);
+      --hsg-color-border-emphasis: var(--hsg-color-neutral-200);
+      --hsg-color-focus-outline: var(--hsg-color-neutral-900);
+      --hsg-color-status-success-background: var(--hsg-color-green-50);
+      --hsg-color-status-success-foreground: var(--hsg-color-green-700);
+      --hsg-color-status-warning-background: var(--hsg-color-yellow-50);
+      --hsg-color-status-warning-foreground: var(--hsg-color-yellow-700);
+      --hsg-color-status-error-background: var(--hsg-color-red-50);
+      --hsg-color-status-error-foreground: var(--hsg-color-red-700);
+      --hsg-color-status-info-background: var(--hsg-color-blue-50);
+      --hsg-color-status-info-foreground: var(--hsg-color-blue-700);
+      --hsg-typography-family-body: "Hsg Line Seed JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+      --hsg-typography-weight-400: 400;
+      --hsg-typography-weight-700: 700;
+      --hsg-typography-size-12: 12px;
+      --hsg-typography-size-13: 13px;
+      --hsg-typography-size-14: 14px;
+      --hsg-typography-size-15: 15px;
+      --hsg-typography-size-16: 16px;
+      --hsg-typography-size-20: 20px;
+      --hsg-typography-size-28: 28px;
+      --hsg-typography-line-height-135: 1.35;
+      --hsg-typography-line-height-150: 1.5;
+      --hsg-typography-line-height-180: 1.8;
+      --hsg-typography-tracking-tight: -0.02em;
+      --hsg-typography-tracking-normal: 0;
+      --hsg-typography-tracking-wide: 0.04em;
+      --hsg-spacing-4: 4px;
+      --hsg-spacing-8: 8px;
+      --hsg-spacing-12: 12px;
+      --hsg-spacing-16: 16px;
+      --hsg-spacing-24: 24px;
+      --hsg-spacing-32: 32px;
+      --hsg-spacing-48: 48px;
+      --hsg-spacing-64: 64px;
+      --hsg-layout-sidebar-width: 268px;
+      --hsg-radius-small: 2px;
+      --hsg-radius-medium: 4px;
+      --hsg-border-width-default: 1px;
+      --hsg-border-width-strong: 2px;
+      --hsg-focus-outline-width: 3px;
+      --hsg-focus-outline-offset: 3px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--hsg-color-background-canvas);
+      color: var(--hsg-color-text-primary);
+      font-family: var(--hsg-typography-family-body);
+      font-size: var(--hsg-typography-size-14);
+      font-weight: var(--hsg-typography-weight-400);
+      line-height: var(--hsg-typography-line-height-150);
+      letter-spacing: var(--hsg-typography-tracking-normal);
+    }
+    button, input, select, textarea { font: inherit; }
+    strong, h1, h2 { font-weight: var(--hsg-typography-weight-700); }
+    button, a, select { -webkit-tap-highlight-color: transparent; }
+    :focus-visible {
+      outline: var(--hsg-focus-outline-width) solid var(--hsg-color-focus-outline);
+      outline-offset: var(--hsg-focus-outline-offset);
+    }
+    .icon { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .app { min-height: 100vh; display: grid; grid-template-columns: var(--hsg-layout-sidebar-width) minmax(0, 1fr); }
+
+    .sidebar {
+      position: sticky; top: 0; height: 100vh;
+      display: flex; flex-direction: column;
+      padding: var(--hsg-spacing-32) var(--hsg-spacing-24) var(--hsg-spacing-24);
+      background: var(--hsg-color-background-raised);
+      border-right: var(--hsg-border-width-default) solid var(--hsg-color-border-default);
+    }
+    .wordmark { display: block; width: 158px; height: auto; margin: 2px 8px 46px; color: var(--hsg-color-text-primary); }
+    .nav-label { margin: 0 12px 10px; color: var(--hsg-color-text-secondary); font-size: var(--hsg-typography-size-12); font-weight: var(--hsg-typography-weight-700); letter-spacing: var(--hsg-typography-tracking-wide); }
+    .nav { display: grid; gap: var(--hsg-spacing-4); }
+    .nav-item {
+      display: flex; align-items: center; gap: var(--hsg-spacing-12); min-height: 44px;
+      padding: 0 var(--hsg-spacing-12); border-left: var(--hsg-border-width-strong) solid transparent;
+      border-radius: var(--hsg-radius-medium); color: var(--hsg-color-text-secondary); text-decoration: none; font-size: var(--hsg-typography-size-15);
+    }
+    .nav-item:hover { background: var(--hsg-color-background-canvas); color: var(--hsg-color-text-primary); }
+    .nav-item.active { border-left-color: var(--hsg-color-blue-400); background: var(--hsg-color-blue-50); color: var(--hsg-color-text-primary); font-weight: var(--hsg-typography-weight-700); }
+    .nav-count { margin-left: auto; min-width: 24px; padding: 2px 7px; border-radius: 999px; background: var(--hsg-color-red-50); color: var(--hsg-color-red-700); font-size: var(--hsg-typography-size-12); font-weight: var(--hsg-typography-weight-700); text-align: center; }
+    .workspace { margin-top: auto; padding: var(--hsg-spacing-16); border-radius: var(--hsg-radius-medium); background: var(--hsg-color-background-canvas); }
+    .workspace strong, .workspace span { display: block; }
+    .workspace span { margin-top: 2px; color: var(--hsg-color-text-secondary); font-size: var(--hsg-typography-size-12); }
+
+    .main { min-width: 0; }
+    .topbar {
+      min-height: 72px; display: flex; align-items: center; justify-content: flex-end; gap: var(--hsg-spacing-16);
+      padding: 0 var(--hsg-spacing-48); background: var(--hsg-color-background-raised); border-bottom: var(--hsg-border-width-default) solid var(--hsg-color-border-default);
+    }
+    .topbar button { border: 0; background: transparent; color: var(--hsg-color-text-secondary); cursor: pointer; }
+    .avatar { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; background: var(--hsg-color-background-inverse); color: var(--hsg-color-text-inverse); font-weight: var(--hsg-typography-weight-700); }
+    .account { display: grid; line-height: 1.25; }
+    .account span { color: var(--hsg-color-text-secondary); font-size: var(--hsg-typography-size-12); }
+
+    .content { max-width: 1440px; margin: 0 auto; padding: var(--hsg-spacing-48); }
+    .page-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--hsg-spacing-32); margin-bottom: var(--hsg-spacing-32); }
+    h1 { margin: 0; font-size: var(--hsg-typography-size-28); line-height: var(--hsg-typography-line-height-135); letter-spacing: var(--hsg-typography-tracking-tight); }
+    .page-head p { margin: var(--hsg-spacing-8) 0 0; color: var(--hsg-color-text-secondary); font-size: var(--hsg-typography-size-15); }
+    .button {
+      min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: var(--hsg-spacing-8);
+      padding: 0 22px; border: var(--hsg-border-width-strong) solid var(--hsg-color-background-inverse);
+      border-radius: var(--hsg-radius-medium); background: var(--hsg-color-background-inverse); color: var(--hsg-color-text-inverse); font-weight: var(--hsg-typography-weight-700); cursor: pointer;
+    }
+    .button:hover { background: var(--hsg-color-background-inverse-hover); border-color: var(--hsg-color-background-inverse-hover); }
+    .button.secondary { background: var(--hsg-color-background-canvas); color: var(--hsg-color-text-primary); border-color: var(--hsg-color-border-emphasis); }
+    .button.secondary:hover { background: var(--hsg-color-background-inverse); color: var(--hsg-color-text-inverse); border-color: var(--hsg-color-background-inverse); }
+
+    .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--hsg-spacing-16); margin-bottom: var(--hsg-spacing-24); }
+    .stat { padding: var(--hsg-spacing-24); border: var(--hsg-border-width-default) solid var(--hsg-color-border-default); border-radius: var(--hsg-radius-medium); background: var(--hsg-color-background-raised); }
+    .stat-label { display: flex; align-items: center; justify-content: space-between; color: var(--hsg-color-text-secondary); font-size: var(--hsg-typography-size-13); font-weight: var(--hsg-typography-weight-700); letter-spacing: var(--hsg-typography-tracking-wide); }
+    .stat-icon { width: 34px; height: 34px; display: grid; place-items: center; border-radius: var(--hsg-radius-small); }
+    .stat-icon.red { background: var(--hsg-color-status-error-background); color: var(--hsg-color-status-error-foreground); }
+    .stat-icon.blue { background: var(--hsg-color-status-info-background); color: var(--hsg-color-status-info-foreground); }
+    .stat-icon.yellow { background: var(--hsg-color-status-warning-background); color: var(--hsg-color-status-warning-foreground); }
+    .stat-icon.green { background: var(--hsg-color-status-success-background); color: var(--hsg-color-status-success-foreground); }
+    .stat-value { margin-top: var(--hsg-spacing-12); font-size: var(--hsg-typography-size-28); font-weight: var(--hsg-typography-weight-700); line-height: var(--hsg-typography-line-height-135); }
+    .stat-note { margin-top: var(--hsg-spacing-4); color: var(--hsg-color-text-secondary); font-size: var(--hsg-typography-size-12); }
+
+    .panel { overflow: hidden; border: var(--hsg-border-width-default) solid var(--hsg-color-border-default); border-radius: var(--hsg-radius-medium); background: var(--hsg-color-background-raised); }
+    .toolbar { display: flex; align-items: center; gap: var(--hsg-spacing-12); padding: var(--hsg-spacing-16) var(--hsg-spacing-24); border-bottom: var(--hsg-border-width-default) solid var(--hsg-color-border-default); }
+    .search { position: relative; flex: 1; max-width: 390px; }
+    .search .icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--hsg-color-text-secondary); pointer-events: none; }
+    .search input, .select {
+      min-height: 44px; border: var(--hsg-border-width-default) solid var(--hsg-color-border-emphasis); border-radius: var(--hsg-radius-medium); background: var(--hsg-color-background-raised); color: var(--hsg-color-text-primary);
+    }
+    .search input { width: 100%; padding: 0 14px 0 43px; }
+    .search input::placeholder { color: var(--hsg-color-text-secondary); }
+    .select { min-width: 150px; padding: 0 36px 0 14px; cursor: pointer; }
+    .result-count { margin-left: auto; color: var(--hsg-color-text-secondary); font-size: var(--hsg-typography-size-13); white-space: nowrap; }
+
+    .tabs { display: flex; gap: var(--hsg-spacing-4); padding: 0 var(--hsg-spacing-24); border-bottom: var(--hsg-border-width-default) solid var(--hsg-color-border-default); overflow-x: auto; }
+    .tab { min-height: 48px; padding: 0 var(--hsg-spacing-12); border: 0; border-bottom: var(--hsg-border-width-strong) solid transparent; background: transparent; color: var(--hsg-color-text-secondary); cursor: pointer; white-space: nowrap; }
+    .tab:hover { color: var(--hsg-color-text-primary); }
+    .tab.active { border-bottom-color: var(--hsg-color-blue-400); color: var(--hsg-color-text-primary); font-weight: var(--hsg-typography-weight-700); }
+    .tab b { margin-left: 6px; font-size: var(--hsg-typography-size-12); }
+
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 900px; }
+    th { height: 44px; padding: 0 var(--hsg-spacing-16); background: var(--hsg-color-background-canvas); color: var(--hsg-color-text-secondary); font-size: var(--hsg-typography-size-12); font-weight: var(--hsg-typography-weight-700); letter-spacing: var(--hsg-typography-tracking-wide); text-align: left; }
+    td { height: 76px; padding: 0 var(--hsg-spacing-16); border-top: var(--hsg-border-width-default) solid var(--hsg-color-border-default); vertical-align: middle; }
+    tbody tr { cursor: pointer; }
+    tbody tr:hover, tbody tr.selected { background: var(--hsg-color-blue-50); }
+    tbody tr.selected { box-shadow: inset 3px 0 var(--hsg-color-blue-400); }
+    .subject { max-width: 320px; }
+    .subject strong, .subject span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .subject strong { font-size: var(--hsg-typography-size-15); }
+    .subject span, .person span, .time span { margin-top: 3px; color: var(--hsg-color-text-secondary); font-size: var(--hsg-typography-size-12); }
+    .person strong, .person span, .time strong, .time span { display: block; }
+    .badge { display: inline-flex; min-height: 24px; align-items: center; gap: 6px; padding: 3px 8px; border-radius: var(--hsg-radius-small); font-size: var(--hsg-typography-size-12); font-weight: var(--hsg-typography-weight-700); letter-spacing: var(--hsg-typography-tracking-wide); white-space: nowrap; }
+    .badge::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+    .badge.unhandled { background: var(--hsg-color-status-error-background); color: var(--hsg-color-status-error-foreground); }
+    .badge.progress { background: var(--hsg-color-status-info-background); color: var(--hsg-color-status-info-foreground); }
+    .badge.waiting { background: var(--hsg-color-status-warning-background); color: var(--hsg-color-status-warning-foreground); }
+    .badge.resolved { background: var(--hsg-color-status-success-background); color: var(--hsg-color-status-success-foreground); }
+    .priority { display: inline-flex; align-items: center; gap: 5px; color: var(--hsg-color-text-secondary); font-size: var(--hsg-typography-size-13); }
+    .priority.high { color: var(--hsg-color-status-error-foreground); font-weight: var(--hsg-typography-weight-700); }
+    .priority.high::before { content: "!"; width: 18px; height: 18px; display: grid; place-items: center; border-radius: 50%; background: var(--hsg-color-status-error-background); }
+    .empty { display: none; padding: var(--hsg-spacing-64); color: var(--hsg-color-text-secondary); text-align: center; }
+    .empty.visible { display: block; }
+
+    .detail-overlay { position: fixed; inset: 0; z-index: 20; display: none; justify-content: flex-end; background: rgba(24, 21, 29, .32); }
+    .detail-overlay.open { display: flex; }
+    .detail { width: min(520px, 100%); height: 100%; overflow-y: auto; background: var(--hsg-color-background-raised); box-shadow: -14px 0 40px rgba(24,21,29,.12); }
+    .detail-head { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; min-height: 72px; padding: 0 var(--hsg-spacing-32); border-bottom: var(--hsg-border-width-default) solid var(--hsg-color-border-default); background: var(--hsg-color-background-raised); }
+    .detail-head strong { font-size: var(--hsg-typography-size-16); }
+    .icon-button { width: 40px; height: 40px; display: grid; place-items: center; border: 0; border-radius: var(--hsg-radius-medium); background: transparent; color: var(--hsg-color-text-secondary); cursor: pointer; }
+    .icon-button:hover { background: var(--hsg-color-background-canvas); color: var(--hsg-color-text-primary); }
+    .detail-body { padding: var(--hsg-spacing-32); }
+    .detail-kicker { display: flex; align-items: center; justify-content: space-between; gap: var(--hsg-spacing-16); }
+    .detail h2 { margin: var(--hsg-spacing-16) 0 0; font-size: var(--hsg-typography-size-20); line-height: var(--hsg-typography-line-height-135); letter-spacing: var(--hsg-typography-tracking-tight); }
+    .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--hsg-spacing-16); margin: var(--hsg-spacing-24) 0; padding: var(--hsg-spacing-24); border-radius: var(--hsg-radius-medium); background: var(--hsg-color-background-canvas); }
+    .meta-grid dt { color: var(--hsg-color-text-secondary); font-size: var(--hsg-typography-size-12); }
+    .meta-grid dd { margin: 4px 0 0; font-weight: var(--hsg-typography-weight-700); }
+    .message { padding: var(--hsg-spacing-24) 0; border-top: var(--hsg-border-width-default) solid var(--hsg-color-border-default); border-bottom: var(--hsg-border-width-default) solid var(--hsg-color-border-default); font-size: var(--hsg-typography-size-15); line-height: var(--hsg-typography-line-height-180); }
+    .reply { margin-top: var(--hsg-spacing-32); }
+    .reply label { display: block; margin-bottom: var(--hsg-spacing-8); font-weight: var(--hsg-typography-weight-700); }
+    .reply textarea { width: 100%; min-height: 144px; resize: vertical; padding: var(--hsg-spacing-16); border: var(--hsg-border-width-default) solid var(--hsg-color-border-emphasis); border-radius: var(--hsg-radius-medium); color: var(--hsg-color-text-primary); line-height: var(--hsg-typography-line-height-180); }
+    .reply-actions { display: flex; justify-content: flex-end; gap: var(--hsg-spacing-12); margin-top: var(--hsg-spacing-16); }
+    .toast { position: fixed; right: var(--hsg-spacing-24); bottom: var(--hsg-spacing-24); z-index: 30; display: none; align-items: center; gap: var(--hsg-spacing-12); padding: var(--hsg-spacing-16) var(--hsg-spacing-24); border-radius: var(--hsg-radius-medium); background: var(--hsg-color-background-inverse); color: var(--hsg-color-text-inverse); box-shadow: 0 12px 28px rgba(24,21,29,.22); }
+    .toast.visible { display: flex; }
+
+    @media (max-width: 1100px) {
+      .app { grid-template-columns: 82px minmax(0,1fr); }
+      .sidebar { padding-inline: var(--hsg-spacing-16); }
+      .wordmark { width: 42px; height: 42px; object-fit: cover; object-position: left; margin-inline: 4px; }
+      .nav-label, .nav-item span:not(.nav-count), .workspace { display: none; }
+      .nav-item { justify-content: center; padding: 0; }
+      .nav-count { position: absolute; transform: translate(17px,-15px); }
+      .stats { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+    @media (max-width: 760px) {
+      .app { display: block; }
+      .sidebar { position: static; width: 100%; height: auto; padding: var(--hsg-spacing-16) var(--hsg-spacing-24); flex-direction: row; align-items: center; border-right: 0; border-bottom: var(--hsg-border-width-default) solid var(--hsg-color-border-default); }
+      .wordmark { width: 130px; height: auto; margin: 0 auto 0 0; object-fit: contain; }
+      .sidebar .nav { display: flex; }
+      .sidebar .nav-item { width: 44px; }
+      .sidebar .nav-item:nth-child(n+3) { display: none; }
+      .topbar { display: none; }
+      .content { padding: var(--hsg-spacing-24); }
+      .page-head { align-items: stretch; flex-direction: column; }
+      .stats { grid-template-columns: 1fr 1fr; }
+      .toolbar { align-items: stretch; flex-wrap: wrap; }
+      .search { max-width: none; flex-basis: 100%; }
+      .select { flex: 1; }
+      .result-count { display: none; }
+    }
+    @media (max-width: 460px) {
+      .stats { grid-template-columns: 1fr; }
+      .page-head .button { width: 100%; }
+      .detail-body { padding: var(--hsg-spacing-24); }
+      .meta-grid { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" aria-label="メインナビゲーション">
+      <img class="wordmark" src="https://design.hashigodaka.co.jp/assets/wordmarks/wordmark.svg" alt="Hashigodaka">
+      <p class="nav-label">WORKSPACE</p>
+      <nav class="nav">
+        <a class="nav-item" href="#"><i class="icon" data-lucide="layout-dashboard" aria-hidden="true"></i><span>ダッシュボード</span></a>
+        <a class="nav-item active" href="#" aria-current="page"><i class="icon" data-lucide="messages-square" aria-hidden="true"></i><span>お問い合わせ</span><b class="nav-count">12</b></a>
+        <a class="nav-item" href="#"><i class="icon" data-lucide="user-round-plus" aria-hidden="true"></i><span>顧客</span></a>
+        <a class="nav-item" href="#"><i class="icon" data-lucide="file-text" aria-hidden="true"></i><span>テンプレート</span></a>
+        <a class="nav-item" href="#"><i class="icon" data-lucide="settings" aria-hidden="true"></i><span>設定</span></a>
+      </nav>
+      <div class="workspace"><strong>Hashigodaka Support</strong><span>管理者ワークスペース</span></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="icon-button" aria-label="通知"><i class="icon" data-lucide="bell" aria-hidden="true"></i></button>
+        <div class="avatar" aria-hidden="true">HS</div>
+        <div class="account"><strong>橋本 さやか</strong><span>サポート管理者</span></div>
+      </header>
+
+      <div class="content">
+        <div class="page-head">
+          <div><h1>お問い合わせ</h1><p>顧客から届いた相談を、担当・優先度・対応状況で管理します。</p></div>
+          <button class="button" id="newInquiry"><i class="icon" data-lucide="plus" aria-hidden="true"></i>お問い合わせを登録</button>
+        </div>
+
+        <section class="stats" aria-label="お問い合わせサマリー">
+          <article class="stat"><div class="stat-label">未対応<span class="stat-icon red"><i class="icon" data-lucide="message-square" aria-hidden="true"></i></span></div><div class="stat-value">12</div><div class="stat-note">前日から 3件増加</div></article>
+          <article class="stat"><div class="stat-label">対応中<span class="stat-icon blue"><i class="icon" data-lucide="clock-3" aria-hidden="true"></i></span></div><div class="stat-value">8</div><div class="stat-note">うち高優先度 2件</div></article>
+          <article class="stat"><div class="stat-label">返信待ち<span class="stat-icon yellow"><i class="icon" data-lucide="message-square-reply" aria-hidden="true"></i></span></div><div class="stat-value">5</div><div class="stat-note">48時間超過 1件</div></article>
+          <article class="stat"><div class="stat-label">本日解決<span class="stat-icon green"><i class="icon" data-lucide="check" aria-hidden="true"></i></span></div><div class="stat-value">18</div><div class="stat-note">平均対応時間 2.4時間</div></article>
+        </section>
+
+        <section class="panel" aria-label="お問い合わせ一覧">
+          <div class="toolbar">
+            <label class="search"><i class="icon" data-lucide="search" aria-hidden="true"></i><input id="search" type="search" placeholder="件名・会社名・担当者で検索" aria-label="お問い合わせを検索"></label>
+            <select class="select" id="assignee" aria-label="担当者で絞り込み"><option value="all">担当者：すべて</option><option value="橋本 さやか">橋本 さやか</option><option value="田中 悠">田中 悠</option><option value="未設定">未設定</option></select>
+            <select class="select" id="priority" aria-label="優先度で絞り込み"><option value="all">優先度：すべて</option><option value="高">高</option><option value="通常">通常</option></select>
+            <span class="result-count" id="resultCount">6件を表示</span>
+          </div>
+          <div class="tabs" role="tablist" aria-label="対応状況">
+            <button class="tab active" role="tab" aria-selected="true" data-status="all">すべて <b>43</b></button>
+            <button class="tab" role="tab" aria-selected="false" data-status="未対応">未対応 <b>12</b></button>
+            <button class="tab" role="tab" aria-selected="false" data-status="対応中">対応中 <b>8</b></button>
+            <button class="tab" role="tab" aria-selected="false" data-status="返信待ち">返信待ち <b>5</b></button>
+            <button class="tab" role="tab" aria-selected="false" data-status="解決済み">解決済み <b>18</b></button>
+          </div>
+          <div class="table-wrap" id="tableWrap">
+            <table>
+              <thead><tr><th>ステータス</th><th>件名</th><th>顧客</th><th>担当者</th><th>優先度</th><th>最終更新</th></tr></thead>
+              <tbody id="inquiryRows"></tbody>
+            </table>
+          </div>
+          <div class="empty" id="empty">条件に一致するお問い合わせはありません。</div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="detail-overlay" id="detailOverlay" aria-hidden="true">
+    <aside class="detail" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+      <header class="detail-head"><strong>お問い合わせ詳細</strong><button class="icon-button" id="closeDetail" aria-label="詳細を閉じる"><i class="icon" data-lucide="x" aria-hidden="true"></i></button></header>
+      <div class="detail-body">
+        <div class="detail-kicker"><span class="badge" id="detailStatus"></span><span id="detailId" class="priority"></span></div>
+        <h2 id="detailTitle"></h2>
+        <dl class="meta-grid">
+          <div><dt>顧客</dt><dd id="detailCustomer"></dd></div><div><dt>受信日時</dt><dd id="detailDate"></dd></div>
+          <div><dt>担当者</dt><dd id="detailAssignee"></dd></div><div><dt>優先度</dt><dd id="detailPriority"></dd></div>
+        </dl>
+        <div class="message" id="detailMessage"></div>
+        <div class="reply"><label for="replyText">返信内容</label><textarea id="replyText" placeholder="返信内容を入力してください"></textarea><div class="reply-actions"><button class="button secondary" id="saveDraft">下書き保存</button><button class="button" id="sendReply"><i class="icon" data-lucide="send" aria-hidden="true"></i>返信する</button></div></div>
+      </div>
+    </aside>
+  </div>
+  <div class="toast" id="toast" role="status"><i class="icon" data-lucide="check" aria-hidden="true"></i><span></span></div>
+
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+  <script>
+    const inquiries = [
+      {id:"INQ-1048",status:"未対応",subject:"サービス導入前の費用について相談したい",summary:"AI活用支援の導入を検討しています。初期費用と月額費用の目安、開始までに必要な準備について教えてください。",company:"株式会社北星商事",person:"佐藤 美咲",assignee:"未設定",priority:"高",date:"8月12日 10:24",updated:"12分前"},
+      {id:"INQ-1047",status:"対応中",subject:"既存システムとのAPI連携可否",summary:"現在利用している顧客管理システムと連携できるか確認したいです。API仕様書を共有できますので、接続方式をご相談できますか。",company:"東都メディア株式会社",person:"山本 健太",assignee:"橋本 さやか",priority:"高",date:"8月12日 09:48",updated:"36分前"},
+      {id:"INQ-1046",status:"返信待ち",subject:"打ち合わせ日程の再調整について",summary:"先ほどご提示いただいた候補日ですが、社内会議と重なってしまいました。来週後半で再調整をお願いします。",company:"合同会社ノード",person:"小林 由佳",assignee:"田中 悠",priority:"通常",date:"8月11日 17:15",updated:"2時間前"},
+      {id:"INQ-1045",status:"未対応",subject:"資料ダウンロード後の個別相談",summary:"資料を拝見し、自社の業務にも活用できそうだと感じました。具体的な進め方を一度オンラインで相談したいです。",company:"株式会社遠峰製作所",person:"伊藤 拓海",assignee:"未設定",priority:"通常",date:"8月11日 15:30",updated:"3時間前"},
+      {id:"INQ-1044",status:"解決済み",subject:"契約書の送付先を変更したい",summary:"契約更新にあたり、契約書類の送付先変更をお願いします。新しい担当部署の情報は別途共有します。",company:"株式会社ミナト企画",person:"高橋 玲奈",assignee:"橋本 さやか",priority:"通常",date:"8月11日 13:02",updated:"昨日"},
+      {id:"INQ-1043",status:"対応中",subject:"分析レポートの表示項目について",summary:"週次レポートに部門別の内訳を追加できるか相談したいです。判断に必要な指標も含めて整理をお願いできますか。",company:"西京フーズ株式会社",person:"中村 聡",assignee:"田中 悠",priority:"通常",date:"8月11日 11:46",updated:"昨日"}
+    ];
+    const statusClass = {"未対応":"unhandled","対応中":"progress","返信待ち":"waiting","解決済み":"resolved"};
+    const rows = document.getElementById("inquiryRows");
+    let activeStatus = "all";
+
+    function render() {
+      const query = document.getElementById("search").value.trim().toLowerCase();
+      const assignee = document.getElementById("assignee").value;
+      const priority = document.getElementById("priority").value;
+      const filtered = inquiries.filter(item => {
+        const haystack = `${item.subject} ${item.company} ${item.person} ${item.assignee}`.toLowerCase();
+        return (!query || haystack.includes(query)) && (activeStatus === "all" || item.status === activeStatus) && (assignee === "all" || item.assignee === assignee) && (priority === "all" || item.priority === priority);
+      });
+      rows.innerHTML = filtered.map(item => `<tr tabindex="0" data-id="${item.id}"><td><span class="badge ${statusClass[item.status]}">${item.status}</span></td><td class="subject"><strong>${item.subject}</strong><span>${item.id}</span></td><td class="person"><strong>${item.company}</strong><span>${item.person}</span></td><td>${item.assignee}</td><td><span class="priority ${item.priority === "高" ? "high" : ""}">${item.priority}</span></td><td class="time"><strong>${item.updated}</strong><span>${item.date}</span></td></tr>`).join("");
+      document.getElementById("resultCount").textContent = `${filtered.length}件を表示`;
+      document.getElementById("tableWrap").style.display = filtered.length ? "block" : "none";
+      document.getElementById("empty").classList.toggle("visible", !filtered.length);
+      rows.querySelectorAll("tr").forEach(row => {
+        row.addEventListener("click", () => openDetail(row.dataset.id));
+        row.addEventListener("keydown", event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); openDetail(row.dataset.id); } });
+      });
+    }
+
+    function openDetail(id) {
+      const item = inquiries.find(entry => entry.id === id);
+      document.querySelectorAll("tbody tr").forEach(row => row.classList.toggle("selected", row.dataset.id === id));
+      const badge = document.getElementById("detailStatus");
+      badge.className = `badge ${statusClass[item.status]}`; badge.textContent = item.status;
+      document.getElementById("detailId").textContent = item.id;
+      document.getElementById("detailTitle").textContent = item.subject;
+      document.getElementById("detailCustomer").textContent = `${item.company} / ${item.person}`;
+      document.getElementById("detailDate").textContent = item.date;
+      document.getElementById("detailAssignee").textContent = item.assignee;
+      document.getElementById("detailPriority").textContent = item.priority;
+      document.getElementById("detailMessage").textContent = item.summary;
+      document.getElementById("detailOverlay").classList.add("open");
+      document.getElementById("detailOverlay").setAttribute("aria-hidden", "false");
+      document.getElementById("closeDetail").focus();
+    }
+    function closeDetail() { const overlay = document.getElementById("detailOverlay"); overlay.classList.remove("open"); overlay.setAttribute("aria-hidden", "true"); }
+    function toast(message) { const node = document.getElementById("toast"); node.querySelector("span").textContent = message; node.classList.add("visible"); window.setTimeout(() => node.classList.remove("visible"), 2400); }
+
+    ["search","assignee","priority"].forEach(id => document.getElementById(id).addEventListener(id === "search" ? "input" : "change", render));
+    document.querySelectorAll(".tab").forEach(tab => tab.addEventListener("click", () => { document.querySelectorAll(".tab").forEach(other => { other.classList.remove("active"); other.setAttribute("aria-selected","false"); }); tab.classList.add("active"); tab.setAttribute("aria-selected","true"); activeStatus = tab.dataset.status; render(); }));
+    document.getElementById("closeDetail").addEventListener("click", closeDetail);
+    document.getElementById("detailOverlay").addEventListener("click", event => { if (event.target.id === "detailOverlay") closeDetail(); });
+    document.addEventListener("keydown", event => { if (event.key === "Escape") closeDetail(); });
+    document.getElementById("saveDraft").addEventListener("click", () => toast("返信を下書き保存しました"));
+    document.getElementById("sendReply").addEventListener("click", () => { const text = document.getElementById("replyText"); if (!text.value.trim()) { text.focus(); toast("返信内容を入力してください"); return; } toast("返信を送信しました"); text.value = ""; closeDetail(); });
+    document.getElementById("newInquiry").addEventListener("click", () => toast("新規登録フォームを開きます"));
+    render();
+    lucide.createIcons({attrs: {"stroke-width": 1.8}});
+  </script>
+</body>
+</html>
