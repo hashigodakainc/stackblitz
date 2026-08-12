@@ -5,7 +5,8 @@
 
 ## Zenn demos
 
-- `zenn/inquiry-management/index.html`: 問い合わせ管理画面
+- デモのフォルダ名は `YYYY-MM-DD-<demo-name>` とする
+- `zenn/2026-08-12-inquiry-management/index.html`: 問い合わせ管理画面
 - HashigodakaのFoundation TokensとComponent Tokensを参照
 - HashigodakaワードマークとLINE Seed JPを使用
 - UIアイコンはLucideを使用
@@ -14,4 +15,4 @@
 
 https://stackblitz.com/github/hashigodakainc/stackblitz
 
-現在は `zenn/inquiry-management/` を起動します。
+現在は `zenn/2026-08-12-inquiry-management/` を起動します。
